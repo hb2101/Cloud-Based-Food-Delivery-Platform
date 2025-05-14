@@ -1,0 +1,27 @@
+@import "tailwindcss";
+
+:root {
+  --background: #FFF7ED;
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background-color: #FFF7ED; /* Matches the bg-orange-50 color */
+  min-height: 100%;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+  padding: 1rem;
+}
