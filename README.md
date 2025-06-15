@@ -1,4 +1,4 @@
-"""# AI Photo Search using AWS
+### AI Photo Search using AWS
 
 This project is a serverless web application that allows users to upload and search photos using natural language queries powered by AI and AWS services. It leverages AWS Lambda, Amazon Lex, Amazon Rekognition, OpenSearch, S3, and API Gateway.
 
