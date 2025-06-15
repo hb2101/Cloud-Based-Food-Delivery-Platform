@@ -1,102 +1,117 @@
-### AI Photo Search using AWS
+# Cloud-Based Food Delivery Platform
 
-This project is a serverless web application that allows users to upload and search photos using natural language queries powered by AI and AWS services. It leverages AWS Lambda, Amazon Lex, Amazon Rekognition, OpenSearch, S3, and API Gateway.
+A scalable and cloud-native food delivery platform built using **Next.js**, **AWS Amplify**, and a modular microservices backend. This project simulates a full-stack online food ordering system with features for users, restaurants, delivery drivers, and admins.
 
-## Features
-
-- Upload images and generate automatic labels using Amazon Rekognition
-- Natural language photo search via Amazon Lex and OpenSearch
-- Web-based frontend for uploading and searching photos
-- Serverless backend with Lambda functions and API Gateway
-- IAM roles and permissions configured for secure access
-
-## Architecture
-
-- **Frontend**: Static HTML/CSS/JS using `apigClient.js` to communicate with backend
-- **Backend**:
-  - `index-photos.py`: Lambda function to process image uploads and label indexing
-  - `search-photos.py`: Lambda function to process search queries using OpenSearch
-- **AWS Services**:
-  - S3 (photo storage)
-  - Lambda (serverless compute)
-  - API Gateway (REST endpoints)
-  - Lex (natural language interface)
-  - Rekognition (image analysis)
-  - OpenSearch (search indexing)
-
+---
 
 ## Architecture Overview
 
 ```
-                         +---------------------+
-                         |       Browser       |
-                         | (Upload & Search UI)|
-                         +---------------------+
-                                   |
-                                   v
-                         +---------------------+
-                         |    API Gateway      |
-                         +---------------------+
-                          |                 |
-                          v                 v
-             +------------------+     +----------------------+
-             | Lambda:          |     | Lambda:              |
-             | index-photos.py  |     | search-photos.py     |
-             +------------------+     +----------------------+
-               |        |                     |
-       +-------+        |                     +---------------------+
-       |                v                                           |
-       |       +--------------------+                               |
-       |       | Amazon Rekognition |                               |
-       |       +--------------------+                               |
-       |                |                                           |
-       |                v                                           v
-       |       +--------------------+                     +--------------------+
-       |       |  Amazon OpenSearch |<--------------------|     Amazon Lex     |
-       |       +--------------------+                     +--------------------+
-       |                |
-       v                v
-+----------------+   +----------------+
-| Amazon S3      |   | Search Results |
-| (Photo Storage)|   +----------------+
-+----------------+
+                         +-----------------------+
+                         |     Frontend (Next.js)|
+                         +-----------+-----------+
+                                     |
+                                     v
+                       +-----------------------------+
+                       |     API Gateway / Amplify   |
+                       +-----------------------------+
+                                     |
+               +---------------------+----------------------+
+               |                                            |
+       +---------------+                          +---------------------+
+       |  Auth Service |                          |   Restaurant Service |
+       +---------------+                          +---------------------+
+               |                                            |
+       +---------------+                          +---------------------+
+       |  Order Service |<----------------------->|  Delivery Service   |
+       +---------------+                          +---------------------+
+                                     |
+                         +-----------------------------+
+                         |     DynamoDB / OpenSearch   |
+                         +-----------------------------+
 ```
 
+---
 
-## Setup & Deployment
+## Features
 
-### Prerequisites
+- Browse restaurants and menus
+- Add items to cart and place orders
+- Real-time delivery tracking
+- Location-based restaurant discovery
+- Authentication and authorization for users, drivers, and admins
+- Modular microservices integration using AWS
 
-- AWS account with IAM roles for Lambda, S3, OpenSearch, Lex
-- AWS CLI & SAM/CloudFormation tools
-
-### Steps
-
-1. **Deploy Infrastructure**  
-   Use the `photo-search-stack.yaml` CloudFormation script to deploy the stack.
-
-2. **Upload Lambda Functions**  
-   Deploy `index-photos.py` and `search-photos.py` using the Lambda console or CI/CD (`backend-buildspec.yml`).
-
-3. **Configure Lex Bot**  
-   Create a Lex bot for photo search intent with slot types for labels.
-
-4. **Frontend Deployment**  
-   Upload contents of `Frontend/` to an S3 static website bucket.
-
-## Testing
-
-- Upload a photo through the web interface
-- Use the search box with queries like:
-  - "Show me pictures of beaches"
-  - "Find sunset photos"
+---
 
 ## Tech Stack
 
-- AWS Lambda
-- Amazon Lex
-- Amazon Rekognition
-- Amazon OpenSearch
-- Amazon S3
-- API Gateway
-- JavaScript (Frontend)
+- **Frontend**: Next.js, TypeScript, TailwindCSS
+- **Backend**: AWS Lambda, API Gateway, DynamoDB, OpenSearch, Step Functions
+- **Authentication**: AWS Cognito / OIDC Provider
+- **Deployment**: AWS Amplify, CloudFormation, Docker (optional)
+
+---
+
+## Project Structure
+
+```
+Cloud-Based-Food-Delivery-Platform/
+├── amplify.yml                # Amplify deployment config
+├── frontend/                  # Next.js frontend
+│   ├── app/                   # App routes (e.g. /restaurants, /orders)
+│   ├── components/            # Shared UI components (Navbar, LoginButton, etc.)
+│   ├── globals.css            # Global styles
+│   ├── layout.tsx             # Root layout component
+│   └── oidc-provider.tsx      # OIDC-based auth logic
+├── backend/                   # (Assumed) Lambda/API source (if separate)
+└── README.md
+```
+
+---
+
+## Setup Instructions
+
+### Prerequisites
+
+- Node.js (v18+)
+- AWS CLI configured with access
+- Amplify CLI (`npm install -g @aws-amplify/cli`)
+
+### Run Locally
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+Visit: `http://localhost:3000`
+
+---
+
+## Deployment
+
+This project is configured for AWS Amplify. To deploy:
+
+```bash
+amplify init
+amplify push
+```
+
+For CI/CD, refer to `amplify.yml`.
+
+---
+
+## Future Enhancements
+
+- Add payment gateway (Stripe or Razorpay)
+- Notification system with SES or SNS
+- Admin dashboard for managing users and orders
+- Integrate route optimization for deliveries
+
+---
+
+## License
+
+MIT License. See `LICENSE` for details.
