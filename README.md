@@ -25,28 +25,42 @@ This project is a serverless web application that allows users to upload and sea
   - OpenSearch (search indexing)
 
 
-## Architecture Diagram
+## Architecture Overview
 
-User
-  |
-  v
-[Static Frontend (S3/HTML/JS)]
-  |
-  v
-[API Gateway]
-  |
-  +--> [Lambda: index-photos.py]
-  |         |
-  |         +--> [Amazon Rekognition] ----+
-  |         |                             |
-  |         +--> [Amazon OpenSearch] <----+
-  |         +--> [Amazon S3 (Store Photo)]
-  |
-  +--> [Lambda: search-photos.py]
-            |
-            +--> [Amazon Lex]
-            |
-            +--> [Amazon OpenSearch] --> [Return Search Results]
+```
+                         +---------------------+
+                         |       Browser       |
+                         | (Upload & Search UI)|
+                         +---------------------+
+                                   |
+                                   v
+                         +---------------------+
+                         |    API Gateway      |
+                         +---------------------+
+                          |                 |
+                          v                 v
+             +------------------+     +----------------------+
+             | Lambda:          |     | Lambda:              |
+             | index-photos.py  |     | search-photos.py     |
+             +------------------+     +----------------------+
+               |        |                     |
+       +-------+        |                     +---------------------+
+       |                v                                           |
+       |       +--------------------+                               |
+       |       | Amazon Rekognition |                               |
+       |       +--------------------+                               |
+       |                |                                           |
+       |                v                                           v
+       |       +--------------------+                     +--------------------+
+       |       |  Amazon OpenSearch |<--------------------|     Amazon Lex     |
+       |       +--------------------+                     +--------------------+
+       |                |
+       v                v
++----------------+   +----------------+
+| Amazon S3      |   | Search Results |
+| (Photo Storage)|   +----------------+
++----------------+
+```
 
 
 ## Setup & Deployment
