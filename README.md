@@ -24,13 +24,30 @@ This project is a serverless web application that allows users to upload and sea
   - Rekognition (image analysis)
   - OpenSearch (search indexing)
 
-## Project Structure
 
-AI-Photo-Search-using-AWS-main/
-├── Frontend/                # Static website code
-├── Lambda_functions/       # Lambda backend code (index/search photos)
-├── otherscripts/           # Buildspec files and CloudFormation template
-├── photo-album-api-dev-swagger.yaml  # Swagger/OpenAPI definition
+## Architecture Diagram
+
+User
+  |
+  v
+[Static Frontend (S3/HTML/JS)]
+  |
+  v
+[API Gateway]
+  |
+  +--> [Lambda: index-photos.py]
+  |         |
+  |         +--> [Amazon Rekognition] ----+
+  |         |                             |
+  |         +--> [Amazon OpenSearch] <----+
+  |         +--> [Amazon S3 (Store Photo)]
+  |
+  +--> [Lambda: search-photos.py]
+            |
+            +--> [Amazon Lex]
+            |
+            +--> [Amazon OpenSearch] --> [Return Search Results]
+
 
 ## Setup & Deployment
 
