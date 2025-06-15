@@ -1,88 +1,71 @@
-AI Photo Search using AWS
+"""# AI Photo Search using AWS
+
 This project is a serverless web application that allows users to upload and search photos using natural language queries powered by AI and AWS services. It leverages AWS Lambda, Amazon Lex, Amazon Rekognition, OpenSearch, S3, and API Gateway.
 
-Features
-Upload images and generate automatic labels using Amazon Rekognition
+## Features
 
-Natural language photo search via Amazon Lex and OpenSearch
+- Upload images and generate automatic labels using Amazon Rekognition
+- Natural language photo search via Amazon Lex and OpenSearch
+- Web-based frontend for uploading and searching photos
+- Serverless backend with Lambda functions and API Gateway
+- IAM roles and permissions configured for secure access
 
-Web-based frontend for uploading and searching photos
+## Architecture
 
-Serverless backend with Lambda functions and API Gateway
+- **Frontend**: Static HTML/CSS/JS using `apigClient.js` to communicate with backend
+- **Backend**:
+  - `index-photos.py`: Lambda function to process image uploads and label indexing
+  - `search-photos.py`: Lambda function to process search queries using OpenSearch
+- **AWS Services**:
+  - S3 (photo storage)
+  - Lambda (serverless compute)
+  - API Gateway (REST endpoints)
+  - Lex (natural language interface)
+  - Rekognition (image analysis)
+  - OpenSearch (search indexing)
 
-IAM roles and permissions configured for secure access
+## Project Structure
 
-Architecture
-Frontend: Static HTML/CSS/JS using apigClient.js to communicate with backend
-
-Backend:
-
-index-photos.py: Lambda function to process image uploads and label indexing
-
-search-photos.py: Lambda function to process search queries using OpenSearch
-
-AWS Services:
-
-S3 (photo storage)
-
-Lambda (serverless compute)
-
-API Gateway (REST endpoints)
-
-Lex (natural language interface)
-
-Rekognition (image analysis)
-
-OpenSearch (search indexing)
-
-Project Structure
-bash
-Copy
-Edit
 AI-Photo-Search-using-AWS-main/
 ├── Frontend/                # Static website code
 ├── Lambda_functions/       # Lambda backend code (index/search photos)
 ├── otherscripts/           # Buildspec files and CloudFormation template
 ├── photo-album-api-dev-swagger.yaml  # Swagger/OpenAPI definition
-Setup & Deployment
-Prerequisites
-AWS account with IAM roles for Lambda, S3, OpenSearch, Lex
 
-AWS CLI & SAM/CloudFormation tools
+## Setup & Deployment
 
-Steps
-Deploy Infrastructure
-Use the photo-search-stack.yaml CloudFormation script to deploy the stack.
+### Prerequisites
 
-Upload Lambda Functions
-Deploy index-photos.py and search-photos.py using the Lambda console or CI/CD (backend-buildspec.yml).
+- AWS account with IAM roles for Lambda, S3, OpenSearch, Lex
+- AWS CLI & SAM/CloudFormation tools
 
-Configure Lex Bot
-Create a Lex bot for photo search intent with slot types for labels.
+### Steps
 
-Frontend Deployment
-Upload contents of Frontend/ to an S3 static website bucket.
+1. **Deploy Infrastructure**  
+   Use the `photo-search-stack.yaml` CloudFormation script to deploy the stack.
 
-Testing
-Upload a photo through the web interface
+2. **Upload Lambda Functions**  
+   Deploy `index-photos.py` and `search-photos.py` using the Lambda console or CI/CD (`backend-buildspec.yml`).
 
-Use the search box with queries like:
+3. **Configure Lex Bot**  
+   Create a Lex bot for photo search intent with slot types for labels.
 
-"Show me pictures of beaches"
+4. **Frontend Deployment**  
+   Upload contents of `Frontend/` to an S3 static website bucket.
 
-"Find sunset photos"
+## Testing
 
-🛠️ Tech Stack
-AWS Lambda
+- Upload a photo through the web interface
+- Use the search box with queries like:
+  - "Show me pictures of beaches"
+  - "Find sunset photos"
 
-Amazon Lex
+## Tech Stack
 
-Amazon Rekognition
-
-Amazon OpenSearch
-
-Amazon S3
-
-API Gateway
-
-JavaScript (Frontend)
+- AWS Lambda
+- Amazon Lex
+- Amazon Rekognition
+- Amazon OpenSearch
+- Amazon S3
+- API Gateway
+- JavaScript (Frontend)
